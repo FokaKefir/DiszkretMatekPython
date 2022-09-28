@@ -161,6 +161,14 @@ def nullasokSzamaNFaktorban(n):
     
     return tizesek + min(kettesek, otosok)
     
+def nullasokSzamaNFaktorban2(n):
+    cnt = 0
+    fv = 5
+    while n // fv:
+        cnt += n // fv
+        fv *= 5
+    return cnt
+
 # endregion
 
 
@@ -169,12 +177,13 @@ if __name__ == "__main__":
     #print(kettoNdikHatvanyokon(n))
     #print(xAzNdikHatvanyokon(3, n))
     #print(legnagyobbSzamSorszama(n))
-    print(legnagyobbSzamSorszama2(n))
+    #print(legnagyobbSzamSorszama2(n))
     #print(szamokOsszege2(n))
     #print(szamokOsszege(n))
     #print(szamokSzorzata(n))
     #print(szamokSzorzata2(n))
     #print(nullasokSzamaNFaktorban(n))
+    print(nullasokSzamaNFaktorban2(n))
 
     
     
