@@ -103,6 +103,46 @@ def xAzNdikHatvanyokon(x, n):
     lista = [x ** i for i in range(1, n+1)]
     return lista
 
+def legnagyobbSzamSorszama(n):
+    num, ind = float(input()), 0
+    for i in range(1, n):
+        x = float(input())
+        if x > num:
+            num, ind = x, i
+    return ind
+
+def legnagyobbSzamSorszama2(n):
+    lst = list(input("Enter your numbers in one row: ").split())
+    lst = [float(x) for x in lst]
+    ind, num = 0, lst[0]
+    for i, x in enumerate(lst):
+        if x > num:
+            ind, num = i, x
+    return ind, num
+
+def szamokOsszege(n):
+    sum = 0
+    for i in range(n):
+        sum += float(input())
+    return sum
+
+def szamokOsszege2(n):
+    lst = list(input("Enter your numbers in one row: ").split())
+    lst = [float(x) for x in lst]
+    return sum(lst)
+
+def szamokSzorzata(n):
+    mul = 1
+    for i in range(n):
+        mul *= float(input())
+    return mul
+
+def szamokSzorzata2(n):
+    lst = list(input("Enter your numbers in one row: ").split())
+    lst = [float(x) for x in lst]
+    return math.prod(lst)
+
+
 def nullasokSzamaNFaktorban(n):
     kettesek = 0
     otosok = 0
@@ -121,6 +161,14 @@ def nullasokSzamaNFaktorban(n):
     
     return tizesek + min(kettesek, otosok)
     
+def nullasokSzamaNFaktorban2(n):
+    cnt = 0
+    fv = 5
+    while n // fv:
+        cnt += n // fv
+        fv *= 5
+    return cnt
+
 # endregion
 
 
@@ -128,7 +176,14 @@ if __name__ == "__main__":
     n = int(input("Enter your number:"))
     #print(kettoNdikHatvanyokon(n))
     #print(xAzNdikHatvanyokon(3, n))
-    print(nullasokSzamaNFaktorban(n))
+    #print(legnagyobbSzamSorszama(n))
+    #print(legnagyobbSzamSorszama2(n))
+    #print(szamokOsszege2(n))
+    #print(szamokOsszege(n))
+    #print(szamokSzorzata(n))
+    #print(szamokSzorzata2(n))
+    #print(nullasokSzamaNFaktorban(n))
+    print(nullasokSzamaNFaktorban2(n))
 
     
     

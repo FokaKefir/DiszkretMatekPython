@@ -1,190 +1,129 @@
 import math
-
 # region 1. feladat
 
-def ketSzamMuveletei(x, y):
-    print("A ket szam:", x, y)
-    print("osszeg:", x + y)
-    print("kulonbseg:", x - y)
-    print("szorzat:", x * y)
-    print("hanyados:", x / y)
-    print("osztasi maradek:", x % y)
+def sumList(lst):
+    return sum(lst)
 
-def myMax(x, y):
-    if x > y:
-        return x
-    else:
-        return y
+def minNumberAndPosition(lst):
+    mini, ind = lst[0], 0
+    for i, x in enumerate(lst):
+        if x < mini:
+            mini, ind = x, i
+    
+    return (mini, ind)
 
-def myMin(x, y):
-    if x < y:
-        return x
-    else:
-        return y
+def maxNumberAndPosition(lst):
+    maxi, ind = lst[0], 0
+    for i, x in enumerate(lst):
+        if x > maxi:
+            maxi, ind = x, i
+    
+    return (maxi, ind)
 
-def elsofokuEgyenletGyoke(a, b):
-    if a == 0:
-        print("Az a nem lehet 0")
-    else:
-        return -b / a
+def numberOfEvenNumbers(lst):
+    s = 0
+    for x in lst:
+        if x % 2 == 0:
+            s += 1
+    return s
 
-def abszolutErtek(x):
-    if x < 0:
-        x = -x
-    return x
+def evenNumbersAndPositions(lst):
+    evenNumbers = []
+    for i, x in enumerate(lst):
+        if x % 2 == 0:
+            evenNumbers += [(x, i)]
+    return evenNumbers
 
-def szamElojele(x):
-    if x >= 0:
-        return "pozitiv"
-    else:
-        return "negativ"
+def averageNumbers(lst):
+    return sum(lst) / len(lst)
 
-def szamEgeszei(x):
-    if type(x) == int:
-        print(x, "szam egesz szam")
-        return
-    else:
-        return (math.floor(x), math.ceil(x))
+def isSquare(num):
+    return int(num ** 0.5) ** 2 == num
 
-def masodfokuEgyenletGyokei(a, b, c):
-    if a == 0:
-        print("Az a nem lehet 0")
-    else:
-        delta = (b ** 2) -4 * a * c
-        if delta < 0:
-            print("Komplex megoldas")
-            return
-        x1 = (-b + math.sqrt(delta)) / (2 * a)
-        x2 = (-b - math.sqrt(delta)) / (2 * a)
-        return (x1, x2)
+def numberOfSquares(lst):
+    s = 0
+    for x in lst:
+        if isSquare(x):
+            s += 1
+    return s
 
-def szuksegesBitek():
-    k = int(input("Enter a number: "))
-    if k % 8 == 0:
-        return k // 8
-    else:
-        return k // 8 + 1
+def squaresAndPositions(lst):
+    squares = []
+    for i, x in enumerate(lst):
+        if isSquare(x):
+            squares += [(x, i)]
+    return squares
 
 # endregion
 
 # region 2. feladat
 
-def generalNigTermeszetesSzamot(n):
-    lista = list(range(1, n + 1))
-    return lista
-
-def generalNdbParosSzamot(n):
-    lista = list(range(2, 2*n+1, 2))
-    return lista
-
-def generalNdbParatlanSzamot(n):
-    lista = list(range(1, 2*n, 2))
-    return lista
-
-def generalNdbNegyzetszamot(n):
-    lista = [x ** 2 for x in range(1, n+1)]
-    return lista
-
-def elsoNSzamOsszege(n):
-    return n * (n + 1) // 2
-
-def elsoNSzamSzorzata(n):
-    return math.factorial(n)
-
-# endregion
-
-# region tobbi feladat
-
-def kettoNdikHatvanyokon(n):
-    lista = [2 ** x for x in range(1, n+1)]
-    return lista
-
-def xAzNdikHatvanyokon(x, n):
-    lista = [x ** i for i in range(1, n+1)]
-    return lista
-
-def legnagyobbSzamSorszama(n):
-    num, ind = float(input()), 0
-    for i in range(1, n):
-        x = float(input())
-        if x > num:
-            num, ind = x, i
-    return ind
-
-def legnagyobbSzamSorszama2(n):
-    lst = list(input("Enter your numbers in one row: ").split())
-    lst = [float(x) for x in lst]
-    ind, num = 0, lst[0]
+def getListIndexesLowerThanX(lst, x = 0):
+    indexes = []
     for i, x in enumerate(lst):
-        if x > num:
-            ind, num = i, x
-    return ind, num
+        if x < 0:
+            indexes += [i]
+    return indexes
 
-def szamokOsszege(n):
-    sum = 0
-    for i in range(n):
-        sum += float(input())
-    return sum
+def fileRead(filename = 'lab02/homerseklet.txt'):
+    fin = open(filename, 'rt')
+    tmp = fin.readline()
+    months = tmp.split()
+    monthIndexes = []  
+    while True:
+        tmp = fin.readline()
+        if not tmp:
+            break
+        print(tmp.strip(), end='   ')
+        tmp = fin.readline()
+        maxTemperatures = [int(x) for x in tmp.split()[5:]]
+        tmp = fin.readline()
+        minTemperatures = [int(x) for x in tmp.split()[5:]]
+        fin.readline()
+        print(minNumberAndPosition(maxTemperatures)[0], end=' ')
+        for ind in getListIndexesLowerThanX(minTemperatures):
+            print(months[ind], end=' ')
+            if ind not in monthIndexes:
+                monthIndexes += [ind]
+        print()
 
-def szamokOsszege2(n):
-    lst = list(input("Enter your numbers in one row: ").split())
-    lst = [float(x) for x in lst]
-    return sum(lst)
+    for ind in monthIndexes:
+            print(months[ind], end=' ')
 
-def szamokSzorzata(n):
-    mul = 1
-    for i in range(n):
-        mul *= float(input())
-    return mul
-
-def szamokSzorzata2(n):
-    lst = list(input("Enter your numbers in one row: ").split())
-    lst = [float(x) for x in lst]
-    return math.prod(lst)
-
-
-def nullasokSzamaNFaktorban(n):
-    kettesek = 0
-    otosok = 0
-    tizesek = 0
-    for i in range(1, n+1):
-        tmp = i
-        while tmp % 10 == 0:
-            tizesek += 1
-            tmp /= 10
-        while tmp % 2 == 0:
-            kettesek += 1
-            tmp /= 2
-        while tmp % 5 == 0:
-            otosok += 1
-            tmp /= 5
-    
-    return tizesek + min(kettesek, otosok)
-    
-def nullasokSzamaNFaktorban2(n):
-    cnt = 0
-    fv = 5
-    while n // fv:
-        cnt += n // fv
-        fv *= 5
-    return cnt
+    fin.close()
 
 # endregion
 
+# region 3. feladat
 
-if __name__ == "__main__":
-    n = int(input("Enter your number:"))
-    #print(kettoNdikHatvanyokon(n))
-    #print(xAzNdikHatvanyokon(3, n))
-    #print(legnagyobbSzamSorszama(n))
-    #print(legnagyobbSzamSorszama2(n))
-    #print(szamokOsszege2(n))
-    #print(szamokOsszege(n))
-    #print(szamokSzorzata(n))
-    #print(szamokSzorzata2(n))
-    #print(nullasokSzamaNFaktorban(n))
-    print(nullasokSzamaNFaktorban2(n))
+def squareNumbers():
+    s = 0
+    while True:
+        line = input()
+        if not line:
+            break
+        x, n = tuple(line.split())
+        x, n = int(x), int(n)
+        print(x ** n)
+        s += n
+    return s
 
-    
-    
-    
+# endregion
+
+# region 4. feladat
+
+def numberOfDigitsInBinary(n):
+    return int(math.log2(n)) + 1
+
+def numberOfDigitsInFactorial(n):
+    if n < 0:
+        return 0
+    if n < 1:
+        return 1
+
+    return int((n * math.log10(n / math.e) + math.log10(2 * math.pi * n) / 2)) + 1
+
+# endregion
+
+if __name__ == '__main__':
+    print(numberOfDigitsInFactorial(100000))
