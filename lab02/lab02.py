@@ -112,8 +112,11 @@ def squareNumbers():
 
 # region 4. feladat
 
-def numberOfDigitsInBinary(n):
-    return int(math.log2(n)) + 1
+def numberOfBits(n):
+    return math.floor(math.log2(n)) + 1
+
+def numberOfDigitsInFactorialSlow(n):
+    return len(str(math.factorial(n)))
 
 def numberOfDigitsInFactorial(n):
     if n < 0:
@@ -121,9 +124,31 @@ def numberOfDigitsInFactorial(n):
     if n < 1:
         return 1
 
-    return int((n * math.log10(n / math.e) + math.log10(2 * math.pi * n) / 2)) + 1
+    return math.floor((n * math.log10(n / math.e) + math.log10(2 * math.pi * n) / 2)) + 1
+
+def numberOfBitsInFactorialSlow(n):
+    fact = math.factorial(n)
+    return numberOfBits(fact)
+
+def numberOfBitsInFactorial(n):
+    numBits = 1
+    for i in range(1, n + 1):
+        numBits += math.log2(i)
+    return math.floor(numBits)
+
+# endregion
+
+# region 5. feladat
 
 # endregion
 
 if __name__ == '__main__':
-    print(numberOfDigitsInFactorial(100000))
+    n = 100000
+    #print("Number of digits in factorial")
+    #print("Faster: ", numberOfDigitsInFactorial(n))
+    #print("Slower: ", numberOfDigitsInFactorialSlow(n))
+    print("Number of bits in factorial")
+    print("Faster: ", numberOfBitsInFactorial(n))
+    print("Slower: ", numberOfBitsInFactorialSlow(n))
+
+
