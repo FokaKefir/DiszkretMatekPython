@@ -140,15 +140,80 @@ def numberOfBitsInFactorial(n):
 
 # region 5. feladat
 
+def getNumberByDigitsOfFactorial(digits):
+    fact = 10 ** digits
+    n = 2
+    mul = 1
+    while n * mul < fact:
+        mul *= n
+        n += 1
+    return n - 1
+
+# endregion
+
+# region 6. feladat
+
+def firstNCubicPower(n):
+    lst = [x ** 3 for x in range(1, n + 1)]
+    return lst
+
+def firstNPowerOfTwo(n):
+    lst = [2 ** x for x in range(1, n + 1)]
+    return lst
+
+def firstNPowerOfThree(n):
+    lst = [3 ** x for x in range(1, n + 1)]
+    return lst
+
+# endregion
+
+# region 7. feladat
+
+def sumFirstNumbers(n):
+    return sum([i for i in range(1, n + 1)])
+
+def sumFirstSquares(n):
+    return sum([i ** 2 for i in range(1, n + 1)])
+
+def sumFirstCubes(n):
+    return sum([i ** 3 for i in range(1, n + 1)])
+
 # endregion
 
 if __name__ == '__main__':
-    n = 100000
+    #n = 100000
     #print("Number of digits in factorial")
     #print("Faster: ", numberOfDigitsInFactorial(n))
     #print("Slower: ", numberOfDigitsInFactorialSlow(n))
-    print("Number of bits in factorial")
-    print("Faster: ", numberOfBitsInFactorial(n))
-    print("Slower: ", numberOfBitsInFactorialSlow(n))
+    #print("Number of bits in factorial")
+    #print("Faster: ", numberOfBitsInFactorial(n))
+    #print("Slower: ", numberOfBitsInFactorialSlow(n))
 
+    #n = 10
+    #print(firstNCubicPower(n))
+    #print(firstNPowerOfTwo(n))
+    #print(firstNPowerOfThree(n))
 
+    #k = 6
+    #n = getNumberByDigitsOfFactorial(k)
+    #print("Number: ", n)
+    #print("Factorial: n=", math.factorial(n))
+
+    n = 10
+    sNumbers = sumFirstNumbers(n)
+    fNumbers = n * (n + 1) // 2
+    print(sNumbers)
+    if sNumbers == fNumbers:
+        print("Equal with the formula")
+
+    sSquares = sumFirstSquares(n)
+    fSquares = n * (n + 1) * (2*n + 1) // 6
+    print(sSquares)
+    if sSquares == fSquares:
+        print("Equal with the formula")
+
+    sCubes = sumFirstCubes(n)
+    fCubes = (n * (n + 1) // 2) ** 2
+    print(sCubes)
+    if sCubes == fCubes:
+        print("Equal with the formula")
