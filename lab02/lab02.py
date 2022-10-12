@@ -194,26 +194,27 @@ if __name__ == '__main__':
     #print(firstNPowerOfTwo(n))
     #print(firstNPowerOfThree(n))
 
-    #k = 6
-    #n = getNumberByDigitsOfFactorial(k)
-    #print("Number: ", n)
-    #print("Factorial: n=", math.factorial(n))
+    k = 2569
+    n = getNumberByDigitsOfFactorial(k)
+    print("Number: ", n)
+    print("Factorial: n=", math.factorial(n))
 
-    n = 10
-    sNumbers = sumFirstNumbers(n)
-    fNumbers = n * (n + 1) // 2
-    print(sNumbers)
-    if sNumbers == fNumbers:
-        print("Equal with the formula")
-
-    sSquares = sumFirstSquares(n)
-    fSquares = n * (n + 1) * (2*n + 1) // 6
-    print(sSquares)
-    if sSquares == fSquares:
-        print("Equal with the formula")
-
-    sCubes = sumFirstCubes(n)
-    fCubes = (n * (n + 1) // 2) ** 2
-    print(sCubes)
-    if sCubes == fCubes:
-        print("Equal with the formula")
+#    n = 10
+#    sNumbers = sumFirstNumbers(n)
+#    fNumbers = n * (n + 1) // 2
+#    print(sNumbers)
+#    if sNumbers == fNumbers:
+#        print("Equal with the formula")
+#
+#    sSquares = sumFirstSquares(n)
+#    fSquares = n * (n + 1) * (2*n + 1) // 6
+#    print(sSquares)
+#    if sSquares == fSquares:
+#        print("Equal with the formula")
+#
+#    sCubes = sumFirstCubes(n)
+#    fCubes = (n * (n + 1) // 2) ** 2
+#    print(sCubes)
+#    if sCubes == fCubes:
+#        print("Equal with the formula")
+#
