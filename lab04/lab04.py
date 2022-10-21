@@ -84,12 +84,75 @@ def cfDecimalNumber(dNum, p=500):
 def cfPhi(p=500):
     return [1 for _ in range(p)]
 
+# endregion
+
+# region 3. feladat
+
+def rootN(num, n=2, p=10):
+    decimal.getcontext().prec = p + 1
+    difference = decimal.Decimal(0.1) ** (p + 1)
+    x = decimal.Decimal(1)
+    xNext = decimal.Decimal((2 * x + num / (x ** 2)) / 3)
+    while x != xNext or abs(xNext - x) > difference:
+        x = xNext
+        xNext = ((n - 1) * x + num / (x ** (n - 1))) / n
+    return xNext
+
+# endregion 
+
+# region 4. feladat 
+
+def quadraticEquationComplexSolution(a, b, c):
+    delta = b ** 2 -4 * a * c
+    if delta == 0:
+        return -b / (2 * a)
+    elif delta < 0:
+        delta = complex(delta)
+    x1 = (-b + delta ** 0.5) / (2 * a) 
+    x2 = (-b - delta ** 0.5) / (2 * a) 
+    return (x1, x2)
+
+# endregion
+
+# region 5. feladat 
+
+def complexAdd(z1, z2):
+    z = (z1[0] + z2[0], z1[1] + z2[1])
+    return z
+
+def complexSub(z1, z2):
+    z = (z1[0] - z2[0], z1[1] - z2[1])
+    return z
+
+def complexMul(z1, z2):
+    z = (z1[0] * z2[0] - z1[1] * z2[1], z1[0] * z2[1] + z1[1] * z2[0])
+    return z
+
+def complexDiv(z1, z2):
+    absZ2 = complexAbs(z2)
+    invZ2 = (z2[0] / (z2[0] ** 2 + z2[1] ** 2), -z2[1] / (z2[0] ** 2 + z2[1] ** 2))
+    return complexMul(z1, invZ2)
+
+def complexAbs(z):
+    return (z[0] ** 2 + z[1] ** 2) ** 0.5
+
+def complexPow(z, n):
+    res = (1, 0)
+    for i in range(n):
+        res = complexMul(res, z)
+    return res
+
+# endregion
+
+# region 6. feladat
+
+
 
 # endregion
 
 if __name__ == '__main__':
     
-    p=10
+    p = 10
     print("phi =", myPhi(p=p))
     print("sqrt =", mySqrt(5, p=p))
     print("pi =", myPi(p=p))
@@ -101,11 +164,29 @@ if __name__ == '__main__':
     print("ctg =", myCtg(30, p=p))
 
     # continued fraction 
-    p = 50
+    p = 30
     print("phi cf:", cfPhi(p=p))
     print("pi cf:", cfDecimalNumber(myPi(), p=p))
     n = 12 # https://mathworld.wolfram.com/PeriodicContinuedFraction.html
     print("sqrt", n, "cf", cfDecimalNumber(mySqrt(n), p=p)) 
 
+    # nth root
+    print(rootN(127, n=5, p=20))
 
+    # Quadratic equation complex solution
+    print(quadraticEquationComplexSolution(1, 4, 5))
+    print(quadraticEquationComplexSolution(1, 4, 4))
+    print(quadraticEquationComplexSolution(1, 0, -4))
+
+    # complex numbers
+    z1 = (2.5, 4.3)
+    z2 = (1.7, 10.25)
+    print("z1 =", z1, ", z2 =", z2)
+    print("z1 + z2 =", complexAdd(z1, z2))
+    print("z1 - z2 =", complexSub(z1, z2))
+    print("z1 * z2 =", complexMul(z1, z2))
+    print("z1 / z2 =", complexDiv(z1, z2))
+    print("abs(z1) =", complexAbs(z1))
+    nPow = 3
+    print("z1 ^", nPow, "=", complexPow(z1, nPow))
 
