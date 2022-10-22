@@ -1,5 +1,7 @@
 import math
 import decimal
+import pygame
+from pygame.locals import *
 
 # region 1. feladat
     
@@ -146,7 +148,64 @@ def complexPow(z, n):
 
 # region 6. feladat
 
+def mandelbrot():
+    width, height = 800, 800
+    screen = pygame.display.set_mode((width,height), DOUBLEBUF)
+    xaxis = width / 1.5
+    yaxis = height / 2
+    scale = 250
+    iterations = 60
+    for iy in range(height):
+        for ix in range(width):
+            c = complex((ix - xaxis)/scale, (iy - yaxis) / scale)
+            z = c
+            for i in range(iterations):
+                z = z ** 2 + c
+                if abs(z) > 2:
+                    color = (255, 255, 255)
+                    break 
+            if abs(z) <= 2:
+                color = (0, 0, 0)
+            screen.set_at((ix, iy), color)
+            screen.set_at((ix, height - iy), color) 
 
+    pygame.display.update()
+    while True:
+        event = pygame.event.poll()
+        if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+            break 
+    pygame.quit()
+
+def julia(c : complex):
+    width, height = 800, 800
+    screen = pygame.display.set_mode((width,height), DOUBLEBUF)
+    xaxis = width / 2
+    yaxis = height / 2
+    scale = (width * height) ** 0.5 / 3
+    iterations = 50
+    for iy in range(height):
+        for ix in range(width):
+            z = complex((ix - xaxis)/scale, (iy - yaxis)/scale)
+            for i in range(iterations):
+                z = z ** 2 + c
+                if abs(z) > 2:
+                    color = (i % 16, i % 16 * 8, i % 16 * 16)
+                    break 
+            if abs(z) <= 2:
+                v = 765 * i / iterations
+                if v > 510:
+                    color = (0, 0, 0)
+                else:
+                    (i%16, i%16*8, i%16*16)
+            screen.set_at((ix, iy), color)
+            screen.set_at((ix, height - iy), color) 
+
+    pygame.display.update()
+    while True:
+        event = pygame.event.poll()
+        if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
+            break 
+    pygame.quit()
 
 # endregion
 
@@ -189,4 +248,22 @@ if __name__ == '__main__':
     print("abs(z1) =", complexAbs(z1))
     nPow = 3
     print("z1 ^", nPow, "=", complexPow(z1, nPow))
+
+    # fractals
+    yn = input("Do you want to see the fractals?(y/n)")
+    if yn == "y" or yn == "Y":
+        mandelbrot()
+        c0 = complex (0, -0.8)
+        c1 = complex (0.285, 0.013)
+        c2 = complex (-0.295, -0.55)
+        c3 = complex (-0.63, -0.407)
+        c4 = complex (-0.624, 0.435)
+        c5 = complex (-1, -0.25)
+        c6 = complex (-1, -0)
+        #julia(c0)
+        complexList = [c1, c2, c3, c4, c5, c6]
+        for c in complexList:
+            julia(c)
+
+
 
