@@ -77,6 +77,40 @@ def largerDigitInBinK(binNum, k):
     maxNum = max(maxNum, num)
     return maxNum, bin(maxNum)[2:]
 
+def numberOfOnesInBinK(lstBinK, k):
+    s = 0
+    for binK in lstBinK:
+        while binK != 0:
+            s += binK % 2
+            binK //= 2
+    return s
+
+def cmpByNumberOfOnesInBinK(lstNum1, lstNum2, k):
+    onesNum1 = numberOfOnesInBinK(lstNum1, k)
+    onesNum2 = numberOfOnesInBinK(lstNum2, k)
+    if onesNum1 == onesNum2:
+        return "equal"
+    elif onesNum1 > onesNum2:
+        return "first one has more ones"
+    else:
+        return "second one has more ones"
+
+# endregion
+
+# region 3. feladat
+
+def decToBase(num, base):
+    if num == 0:
+        return []
+    else:
+        return decToBase(num // base, base) + [num % base]
+
+def baseToDec(lstNum : list, base):
+    if not lstNum:
+        return 0
+    else:
+        return (base ** (len(lstNum) - 1)) * lstNum[0] + baseToDec(lstNum[1:], base)
+
 # endregion
 
 # region 4. feladat
@@ -98,8 +132,6 @@ def digitsInFibList(num):
         else:
             lst += "0"
     return lst
-
-
 
 # endregion
 
@@ -142,15 +174,30 @@ def firstAndLastDigitOfnthFibNumber(n):
 
 # endregion
 
+# region 7. feladat
+
+
+
+# endregion
+
+# region 8. feladat
+
+
+
+# endregion
+
 if __name__ == '__main__':
-    # decimal 
+    # converts number system  
     print(firstDigit(346314))
     print(numberOfDigits(112323))
     print(numberOfEvenDigits(112323))
     print(firstDigitInB(20, 8))
     print(numberOfDigitsEqualKInB(18 + 2 * 8 ** 2, 8, 2))
+    print(numberOfOnesInBinK([10, 11, 8], 4))
+    print(cmpByNumberOfOnesInBinK([10, 11, 8], [10, 11, 7], 4))
+    print()
 
-    # converts
+    # converts b to b**k
     print(convBtoBk([1, 0, 1, 1, 1, 0, 1, 1], 2, 3))
     print(convBkToB([2, 7, 3], 2, 3))
 
@@ -158,6 +205,12 @@ if __name__ == '__main__':
     print(convBtoBk(convBkToB([200, 123, 440, 50], 3, 6), 3, 6))
 
     print(largerDigitInBinK([1, 0, 1, 1, 1, 0, 1, 1], 3))
+    print()
+
+    # converts rec
+    print(decToBase(1564, 13))
+    print(baseToDec(decToBase(1564, 13), 13))
+    print()
 
     # fibonacci 
     print(generateFibList(49))
