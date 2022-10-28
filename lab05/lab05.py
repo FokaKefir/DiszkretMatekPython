@@ -117,33 +117,33 @@ def baseToDec(lstNum : list, base):
 
 def generateFibList(num):
     lst = [1, 2]
-    while lst[len(lst) - 1] < num:
+    while lst[len(lst) - 1] <= num:
         lst += [lst[len(lst) - 1] + lst[len(lst) - 2]]
     lst.pop()
     return lst
 
 def digitsInFibList(num):
-    lst = ""
+    digits = ""
     fibList = generateFibList(num)
     for fibNum in fibList[::-1]:
         if num >= fibNum:
-            lst += "1"
+            digits += "1"
             num -= fibNum
         else:
-            lst += "0"
-    return lst
+            digits += "0"
+    return digits
 
 # endregion
 
 # region 5. feladat
 
-def numberInFibList(lst):
-    if len(lst) == 1:
-        return int(lst[0])
-    lst = lst[::-1]
-    num = int(lst[0]) + int(lst[1]) * 2
+def numberInFibList(digits):
+    if len(digits) == 1:
+        return int(digits[0])
+    digits = digits[::-1]
+    num = int(digits[0]) + int(digits[1]) * 2
     a, b = 1, 2
-    for x in lst[2:]:
+    for x in digits[2:]:
         c = a + b
         num += c * int(x)
         a = b
@@ -176,13 +176,37 @@ def firstAndLastDigitOfnthFibNumber(n):
 
 # region 7. feladat
 
+def generateFactList(num):
+    lst = [1]
+    while lst[len(lst) - 1] <= num:
+        lst += [lst[len(lst) - 1] * len(lst)]
+    lst.pop()
+    return lst
 
+def digitsInFactList(num):
+    digits = ""
+    factList = generateFactList(num)
+    for factNum in factList[::-1]:
+        if num >= factNum:
+            digits += "1"
+            num -= factNum
+        else:
+            digits += "0"
+    return digits
 
 # endregion
 
 # region 8. feladat
 
-
+def numberInFactList(digits):
+    k = 1
+    fact = 1
+    num = 0
+    for x in digits[::-1]:
+        num += int(x) * fact
+        fact *= k
+        k += 1
+    return num
 
 # endregion
 
@@ -213,9 +237,15 @@ if __name__ == '__main__':
     print()
 
     # fibonacci 
-    print(generateFibList(49))
+    print(generateFibList(49)[::-1])
     print(digitsInFibList(49))
     print(numberInFibList("10100010"))
 
     print(nthFibNumber(14))
     print(firstAndLastDigitOfnthFibNumber(14))
+    print()
+
+    # factorial
+    print(generateFactList(28)[::-1])
+    print(digitsInFactList(28))
+    print(numberInFactList("10111"))
