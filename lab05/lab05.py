@@ -179,7 +179,7 @@ def firstAndLastDigitOfnthFibNumber(n):
 def generateFactList(num):
     lst = [1]
     while lst[len(lst) - 1] <= num:
-        lst += [lst[len(lst) - 1] * len(lst)]
+        lst += [lst[len(lst) - 1] * (len(lst) + 1)]
     lst.pop()
     return lst
 
@@ -188,8 +188,8 @@ def digitsInFactList(num):
     factList = generateFactList(num)
     for factNum in factList[::-1]:
         if num >= factNum:
-            digits += "1"
-            num -= factNum
+            digits += str(num // factNum)
+            num = num % factNum
         else:
             digits += "0"
     return digits
@@ -199,7 +199,7 @@ def digitsInFactList(num):
 # region 8. feladat
 
 def numberInFactList(digits):
-    k = 1
+    k = 2
     fact = 1
     num = 0
     for x in digits[::-1]:
@@ -246,6 +246,6 @@ if __name__ == '__main__':
     print()
 
     # factorial
-    print(generateFactList(28)[::-1])
-    print(digitsInFactList(28))
-    print(numberInFactList("10111"))
+    print(generateFactList(8172)[::-1])
+    print(digitsInFactList(8172))
+    print(numberInFactList("1420200"))
