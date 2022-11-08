@@ -1,0 +1,6 @@
+audi 32000
+suzuki 25000
+fiat 12000
+toyota 29000
+mercedes 35000
+skoda 17000
