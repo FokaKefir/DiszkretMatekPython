@@ -1,0 +1,4 @@
+istvan 2000
+katalin 5000
+balint 4500
+eszter 2500
