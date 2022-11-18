@@ -3,10 +3,11 @@ import random
 # region 1. task
 
 def generateRandomNumberOnNBit(n):
-    num = 0
-    for i in range(n):
-        num = (num << 1) + random.randint(0, 1)
-    return num 
+    return random.randint(0, 2 ** n - 1)
+    #num = 0
+    #for i in range(n):
+    #    num = (num << 1) + random.randint(0, 1)
+    #return num 
 
 def numberOfOneBits(num):
     nBits = 0
@@ -72,7 +73,7 @@ def task3():
 
 # endregion
 
-# region 4. taks
+# region 4. task
 
 def decodeFile(filename : str, fileOut, base : int):
     out = ""
@@ -97,9 +98,23 @@ def task4():
 
 # endregion
 
+# region 5. task
+
+def task5():
+    with open("lab06/ascii.txt", "wt", encoding="utf-8") as fout:
+        for i in range(0, 256):
+            fout.write("%5s%5i" % (chr(i), i))
+            fout.write("%11s" % format(i, 'b'))
+            fout.write("%5s" % format(i, 'o'))
+            fout.write("%4s" % format(i, 'x'))
+            fout.write("%6s" % ' ')
+
+            if i % 3 == 1:
+                fout.write("\n")
+
+# endregion
 
 if __name__ == "__main__":
-    task3()
-    task4()
+    task5()
     
     
