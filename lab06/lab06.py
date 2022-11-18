@@ -50,6 +50,7 @@ def task3():
 
     inp = open(filename, "rb")
     byts = inp.read()
+    byts = byts.replace(b'\r', b'')
     inp.close()
 
     outBin = open(foutBin, "wt")
@@ -67,12 +68,38 @@ def task3():
         outHex.write(hx + " ")
         if i % 16 == 0:
             outHex.write("\n")
-        
 
 
 # endregion
 
+# region 4. taks
+
+def decodeFile(filename : str, fileOut, base : int):
+    out = ""
+    with open(filename, "rt") as fin:
+        for row in fin:
+            for strNum in row.strip().split(" "):
+                num = int(strNum, base)
+                c = chr(num)
+                out += c
+    with open(fileOut, "wt") as fout:
+        fout.write(out)
+
+def task4():
+    filenameBin = "lab06/outbin.txt"
+    foutFromBin = "lab06/frombin.txt"
+    decodeFile(filenameBin, foutFromBin, base=2)
+    filenameHex = "lab06/outhex.txt"
+    foutFromHex = "lab06/fromhex.txt"
+    decodeFile(filenameHex, foutFromHex, base=16)
+
+
+
+# endregion
+
+
 if __name__ == "__main__":
     task3()
+    task4()
     
     
