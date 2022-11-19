@@ -1,4 +1,5 @@
 import random
+import base64
 
 # region 1. task
 
@@ -69,6 +70,38 @@ def task3():
         outHex.write(hx + " ")
         if i % 16 == 0:
             outHex.write("\n")
+    outBin.close()
+    outHex.close()
+
+def task3_2():
+    filename = "lab06/in.txt"
+    foutBin = "lab06/outbin.txt"
+    foutHex = "lab06/outhex.txt"
+
+    with open(filename, "rb") as fin:
+        byts = fin.read()
+        byts = byts.replace(b'\r', b'')
+
+    strHex = ""
+    strBin = ""
+    ind = 1
+    for byt in byts:
+        hx = format(byt, 'x')
+        strHex +=  "0" * (2 - len(hx)) + hx + ' '
+        if ind % 16 == 0:
+            strHex += '\n'
+
+        bn = format(byt, 'b')
+        strBin += "0" * (8 - len(bn)) + bn + ' '
+        if ind % 4 == 0:
+            strBin += '\n'
+
+        ind += 1
+
+    with open(foutHex, "wt") as fHex:
+        fHex.write(strHex)
+    with open(foutBin, "wt") as fBin:
+        fBin.write(strBin)
 
 
 # endregion
@@ -114,7 +147,145 @@ def task5():
 
 # endregion
 
-if __name__ == "__main__":
-    task5()
+# region 6. task
+
+def task6():
+    filename = "lab06/in.txt"
+    with open(filename, "rt") as fin:
+        txt = fin.read()
+        txt = txt.upper()
+        print(txt)
+
+# endregion
+
+# region 7. task
+
+def numberOfPrintableCharacters(txt : bytes):
+    n = 0
+    for b in txt:
+        c = chr(b)
+        if c.isprintable():
+            n += 1
+    return n
+
+def task7():
+    filename = "lab06/print.txt"
+    with open(filename, "rb") as fin:
+        txt = fin.read()
+        n = numberOfPrintableCharacters(txt)
+        print(n)
+
+# endregion
+
+# region 8. task
+
+def encode(txt : bytes, key):
+    out = ""
+    for b in txt:
+        out += chr(b ^ key)
+    return out
+
+def task8():
+    filename = "lab06/print.txt"
+    with open(filename, "rb") as fin:
+        txt = fin.read()
+        key = generateRandomNumberOnNBit(8)
+        encodedTxt = encode(txt, key)
+        print(encodedTxt)
+
+# endregion
+
+# region 9. task
+
+def encodeStringToBase64(mystr):
+    mybytes = mystr.encode("ascii")
+    encoded = base64.b64encode(mybytes).decode("ascii")
+    return encoded
+
+def task9():
+    mystr = "Szia Pityu! Hogy vagy?"
+    print(encodeStringToBase64(mystr))
+
+# endregion
+
+# region 10. task
+
+def decToBase(num, base=256):
+    numBase = []
+    while (num):
+        numBase = [num % base] + numBase
+        num //= base
+    return numBase
+
+def encodeNumberToBase64(num):
+    lst = decToBase(num, base=256)
+    barray = bytearray()
+    for x in lst:
+        barray.append(x)
+    bs = bytes(barray)
+    return base64.b64encode(bs).decode("ascii")
+
+def encodeNumberAndWriteToFile(num, filename):
+    encodedNum = encodeNumberToBase64(num)
+    with open(filename, "wt") as fout:
+        fout.write(encodedNum)
+
+def baseToDec(lst, base=256):
+    num = 0
+    k = 1
+    for x in lst[::-1]:
+        num += k * x
+        k *= base
+    return num
+
+def decodeNumberFromBase64(encodedNum : str):
+    bs = base64.b64decode(encodedNum)
+    lst = []
+    for b in bs:
+        lst += [int(b)]
+    return baseToDec(lst, base=256)
+
+def decodeBase64ToNumberReadedFromFile(filename):
+    with open(filename, "rt") as fin:
+        encodedNum = fin.read()
+        num = decodeNumberFromBase64(encodedNum)
+    return num
+
+
+def task10():
+    num = generateRandomNumberOnNBit(1024)
+    print(num)
+    filename = "lab06/encoded_num_base64.txt"
+    encodeNumberAndWriteToFile(num, filename)
+    num2 = decodeBase64ToNumberReadedFromFile(filename)
+    print(num2)
+
     
+
+# endregion
+
+# region 11. task
+
+def task11():
+    pass
+
+# endregion
+
+# region 12. task
+
+def task12():
+    pass
+
+# endregion
+
+# region 13. task
+
+def task13():
+    pass
+
+# endregion
+
+
+if __name__ == "__main__":
+    task10()
     
