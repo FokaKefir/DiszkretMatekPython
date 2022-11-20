@@ -197,6 +197,10 @@ def task8():
 
 # region 9. task
 
+def decodeStringFromBase64(encodedStr):
+    bs = base64.b64decode(encodedStr)
+    return bs.decode("ascii")
+
 def encodeStringToBase64(mystr):
     mybytes = mystr.encode("ascii")
     encoded = base64.b64encode(mybytes).decode("ascii")
@@ -251,7 +255,6 @@ def decodeBase64ToNumberReadedFromFile(filename):
         num = decodeNumberFromBase64(encodedNum)
     return num
 
-
 def task10():
     num = generateRandomNumberOnNBit(1024)
     print(num)
@@ -260,14 +263,44 @@ def task10():
     num2 = decodeBase64ToNumberReadedFromFile(filename)
     print(num2)
 
-    
-
 # endregion
 
 # region 11. task
 
+def encodeFileByKey(filename, filekey):
+    key = generateRandomNumberOnNBit(8)
+    keyBase64 = encodeStringToBase64(str(key))
+    with open(filekey, "wt") as fkey:
+        fkey.write(keyBase64)
+    encodedContent = ""
+    with open(filename, "rb") as fin:
+        byts = fin.read()
+        for b in byts:
+            encodedContent += str(b ^ key) + " "
+    with open(filename + ".txt", "wt") as fout:
+        fout.write(encodedContent)
+    return filename + ".txt"
+            
+def decodeFileByKey(filenameEncoded, filekey, extension=".pdf"):
+    with open(filekey, "rt") as fkey:
+        keyBase64 = fkey.read()
+        key = int(decodeStringFromBase64(keyBase64))
+    with open(filenameEncoded, "rt") as fin:
+        content = fin.read()
+        barray = bytearray()
+        for strNum in content.split(" ")[:-1:]:
+            num = int(strNum)
+            barray.append(num ^ key)
+        bs = bytes(barray)
+    with open(filenameEncoded + extension, "wb") as fout:
+        fout.write(bs)
+
 def task11():
-    pass
+    filename = "lab06/large.pdf"
+    fileKey = "lab06/key.txt"
+    filenameEncoded = encodeFileByKey(filename, fileKey)
+    extension = filename[filename.index('.'):]
+    decodeFileByKey(filenameEncoded, fileKey, extension=extension)
 
 # endregion
 
@@ -287,5 +320,5 @@ def task13():
 
 
 if __name__ == "__main__":
-    task10()
+    task11()
     
