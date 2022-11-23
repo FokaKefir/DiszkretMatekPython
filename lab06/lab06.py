@@ -4,7 +4,7 @@ import base64
 # region 1. task
 
 def generateRandomNumberOnNBit(n):
-    return random.randint(0, 2 ** n - 1)
+    return random.randint(2 ** (n - 1), 2 ** n - 1)
     #num = 0
     #for i in range(n):
     #    num = (num << 1) + random.randint(0, 1)
@@ -306,8 +306,56 @@ def task11():
 
 # region 12. task
 
+def getKeyList(encodedKey : str):
+    return list(base64.b64decode(encodedKey.encode()))
+
+def getKeyNum(keyList, ind):
+    return keyList[ind % (len(keyList))]
+
+def cryptFileByKeyList(codedFile, keyList):
+    barray = bytearray()
+    for i, b in enumerate(codedFile):
+        key = getKeyNum(keyList, i)
+        barray.append(b ^ key)
+    return bytes(barray)
+
+def decodeFileByKeyList(encodedFile, keyList):
+    barray = bytearray()
+    for i, b in enumerate(encodedFile):
+        key = getKeyNum(keyList, i)
+        barray.append(b ^ key)
+        if i == 3:
+            if format(barray[0], 'x') != "25" or format(barray[1], 'x') != "50" or format(barray[2], 'x') != "44" or format(barray[3], 'x') != "46":
+                return None
+    return bytes(barray)
+
 def task12():
-    pass
+    fileKeys = "lab06/adatokXOR.txt"
+    with open(fileKeys, "rt") as fin:
+        keys = dict()
+        for row in fin.readlines():
+            datas = row.replace('"', "").replace("\n", "").split(",")
+            keys[datas[0]] = datas[1]
+
+    filename = "lab06/cryptXOR"
+    with open(filename, "rb") as fin:
+        encodedFile = fin.read()
+        for name, encodedKey in keys.items():
+            keyList = getKeyList(encodedKey)
+            decodedFile = decodeFileByKeyList(encodedFile, keyList)
+            if decodedFile != None:
+                with open(filename + ".pdf", "wb") as fout:
+                    fout.write(decodedFile) 
+
+def task12tmp():
+    keyList = [88, 79, 82, 69, 110, 99, 114, 121, 112, 116, 75, 101, 121, 49, 57]
+    filename = "lab06/large.pdf"
+    with open(filename, "rb") as fin:
+        file = fin.read()
+        cryptFile = cryptFileByKeyList(file, keyList)
+        fileBack = cryptFileByKeyList(cryptFile, keyList)
+        with open(filename + ".txt.pdf", "wb") as fout:
+            fout.write(fileBack)
 
 # endregion
 
@@ -318,7 +366,6 @@ def task13():
 
 # endregion
 
-
 if __name__ == "__main__":
-    task11()
+    task12()
     
