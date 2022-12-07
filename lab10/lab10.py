@@ -10,8 +10,10 @@ def inverse(a, m):
         q = a // b
         r = a - b * q
         if r == 0:
-            if b != 1: return -1
-            else: return x1 % m
+            if b != 1: 
+                return -1
+            else: 
+                return x1 % m
         x = x0 - q * x1
         x0, x1 = x1, x
         a, b = b, r
@@ -34,8 +36,6 @@ def chineseRemainder(aL, mL):
     for i in range(len(mL)):
         x = (x + aL[i] * mkL[i] * invMkL[i]) % mMul
     return x
-
-    
 
 def task1():
     aL = [4, 11, 0]
