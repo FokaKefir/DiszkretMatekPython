@@ -138,9 +138,8 @@ def task3():
 # region 4. task
 
 def task4():
-    k = 10
+    k = 4
     p = generateRandomPrimeNumber(k)
-    p = 11
     print(p)
     foutKvad = open("lab10/kvadratikus.txt", "wt")
     foutNotKvad = open("lab10/notkvadratikus.txt", "wt")
