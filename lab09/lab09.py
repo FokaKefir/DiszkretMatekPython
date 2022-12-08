@@ -1,5 +1,6 @@
 import math
 import random
+import time
 
 # region 1. task
 
@@ -101,20 +102,6 @@ def millerRabin(m, t=10):
             return False
     return True
 
-def isPrimeNumber(num):
-    if num == 1:
-        return False
-    if num == 2:
-        return True
-    elif num % 2 == 0:
-        return False
-    k = 3
-    while k * k <= num:
-        if num % k == 0:
-            return False
-        k += 2
-    return True
-
 def calcEuler(x, m, eulerF):
     ok = 0
     while m % x == 0:
@@ -141,9 +128,9 @@ def inverseEuler(a, m):
     if math.gcd(a, m) != 1:
         return -1
     if millerRabin(m):
-        return (a ** (m - 2)) % m
+        return pow(a, m - 2, m)
     else:
-        return (a ** (euler(m) - 1)) % m
+        return pow(a, euler(m) - 1, m)
 
 
 def task3():
@@ -156,6 +143,5 @@ def task3():
 
 # endregion
 
-
 if __name__ == "__main__":
-    task1()
+    task3()
