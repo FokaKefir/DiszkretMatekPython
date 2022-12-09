@@ -128,7 +128,7 @@ def task4():
 
 def generateRandomPrimeNumberByBits(bits):
     num = random.getrandbits(bits)
-    while (not millerRabin(num) or not millerRabin((num - 1) // 2)):
+    while (not millerRabin(num) or not millerRabin((num - 1) // 2)): # safe primes
         num = random.getrandbits(bits)
     return num
 
