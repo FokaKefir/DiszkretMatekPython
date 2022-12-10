@@ -1,5 +1,6 @@
 import math
 import random
+import base64
 
 # region 1. task
 
@@ -139,8 +140,8 @@ def RSAkeyGen(k):
     d = inverse(e, phi)
     return (e, d, n, p, q)
 
-def RSAcrypt(num, e, n):
-    return pow(num, e, n)
+def RSAcrypt(k, e, n):
+    return pow(k, e, n)
 
 def RSAdecrypt(cK, d, n):
     return pow(cK, d, n)
@@ -277,13 +278,169 @@ def task7():
     p = 47 
     q = 59
     n = p * q
-
+    s = 0
     for a in range(1, n):
         if jacobi(a, n) == 1:
-            # TODO 
-            pass
+            pInv = inverse(p, q)
+            qInv = inverse(q, p)
+            xp = pow(a, (p + 1) // 4, p)
+            xq = pow(a, (q + 1) // 4, q)
+            x1 = (pInv * p * xq + qInv * q * xp) % n
+            x2 = (pInv * p * xq - qInv * q * xp) % n
+            x3 = n - x1
+            x4 = n - x2
+
+            print("Kvadratikus maradek:", a, "negyzetgyokei", x1, x3, x2, x4)
+            s += 1
+    print(s, "db kvadratikus maradek")
+
+# endregion
+
+# region 8. task
+
+def task8():
+    with open("lab10/rabinKey.txt", "rt") as fin:
+        for row in fin:
+            data = row.split(" ")
+            cK, p, q = data[0::3]
+            cK, p, q = int(cK), int(p), int(q)
+            n = p * q
+            phi = (p-1) * (q-1)
+            e = 3
+            while True:
+                if math.gcd(e, phi) == 1: 
+                    break
+                e += 2
+            d = inverse(e, phi)
+            k = RSAdecrypt(cK, d, n)
+            print(k)
+            # TODO decode to string
+
+# endregion
+
+# region 9. task
+
+def encodeBase64(myStr : str):
+    return base64.b64encode(myStr.encode()).decode()
+
+def decodeBase64(myStr : str):
+    return base64.b64decode(myStr.encode()).decode()
+
+def rabinKeyGen(bits=256):
+    while True:
+        p = random.getrandbits(bits)
+        if p % 8 == 3 and millerRabin(p):
+            break
+    while True:
+        q = random.getrandbits(bits)
+        if q % 8 == 7 and millerRabin(q):
+            break
+    n = p * q
+    d = (n - p - q + 5) // 8
+    return n, d, p, q
+
+def rabinSign(k, d, n):
+    kK = 16 * k + 6
+    if jacobi(kK, n):
+        return pow(kK, d, n)
+    else:
+        return pow(kK // 2, d, n)
+
+def rabinVerify(sign, n):
+    kK1 = (sign * sign) % n
+    temp = kK1 % 8
+    if temp == 6:
+        kK = kK1
+    elif temp == 3:
+        kK = 2 * kK1
+    elif temp == 7:
+        kK = n - kK1
+    elif temp == 2:
+        kK = 2 * (n - kK1)
+    return (kK - 6) // 16
+
+def task9_1():
+    foutPrivateKey = open("lab10/rabin_private_key", "wt")
+    foutPublicKey = open("lab10/rabin_public_key", "wt")
+    n, d, p, q = rabinKeyGen(bits=256)
+    #print(n, d)
+    privateKey64 = encodeBase64(str(d))
+    publicKey64 = encodeBase64(str(n))
+    print(privateKey64, file=foutPrivateKey)
+    print(publicKey64, file=foutPublicKey)
+    foutPrivateKey.close()
+    foutPublicKey.close()
+    
+
+def task9_2():
+    with open("lab10/rabin_private_key", "rt") as finPrivateKey:
+        privateKey64 = finPrivateKey.read()
+    with open("lab10/rabin_public_key", "rt") as finPublicKey:
+        publicKey64 = finPublicKey.read()
+    d = int(decodeBase64(privateKey64))
+    n = int(decodeBase64(publicKey64))
+    k = int(input("adjon meg egy tetszoleges erteket: "))
+    sign = rabinSign(k, d, n)
+    #print(sign)
+    return sign
+
+def task9_3(sign):
+    with open("lab10/rabin_public_key", "rt") as finPublicKey:
+        publicKey64 = finPublicKey.read()
+    n = int(decodeBase64(publicKey64))
+    k = rabinVerify(sign, n)
+    print(k)
+
+def task9():
+    task9_1()
+    sign = task9_2()
+    task9_3(sign)
+
+# endregion
+
+# region 10. task
+
+def task10():
+    x, y = 49841, 98456
+    mList = [23, 29, 31, 37, 41, 43, 47, 53, 59, 61]
+    xyList = []
+    for m in mList:
+        xyList += [(x % m) + (y % m)]
+    z = chineseRemainder(xyList, mList)
+    print(z, x + y)
+
+# endregion
+
+# region 12. task
+
+# a*x+b*y=c
+def diofant (a, b, c):
+    (d, xk, yk) = extEuclid(a, b)
+    if c % d != 0:
+        return -1
+    x0 = xk * c // d
+    y0 = yk * c // d
+    bd = b // d
+    ad = a // d
+    n1 = int (math.ceil(-x0 / bd))
+    n2 = int (math.floor(y0 / ad))
+    if n1 <= n2:
+        lst = []
+        for i in range(n1, n2 + 1):
+            lst += [(x0 + bd * i, y0 - ad * i)]
+        return lst
+    else: 
+        return -1
+
+def task12():
+    with open("lab10/diofant.txt", "rt") as fin:
+        for row in fin.readlines():
+            a, b, c = row.split(" ")
+            a, b, c = int(a), int(b), int(c)
+            print(f'{a}*x + {b}*y = {c} : ')
+            print("\t", diofant(a, b, c))
 
 # endregion
 
 if __name__ == "__main__":
-    task6()
+    task12()
