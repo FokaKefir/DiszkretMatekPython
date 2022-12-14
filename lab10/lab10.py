@@ -104,9 +104,9 @@ def millerRabin(m, t=10):
     r = m - 1
     while (r & 1 == 0):
         s, r = s + 1, r >> 1
-    for x in [3, 5, 7]:
-        if m % x == 0:
-            return False
+    #for x in [3, 5, 7]:
+    #    if m % x == 0:
+    #        return False
 
     for _ in range(t - 3):
         x = random.randint(2, m - 1)
