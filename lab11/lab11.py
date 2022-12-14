@@ -149,5 +149,95 @@ def task4():
 
 # endregion
 
+# region 5. task 
+
+def millerRabinForX(m, s, r, x):
+    y = pow(x, r, m)
+    if y == 1 or y == (m - 1):
+        return True
+    for _ in range(s):
+        y = (y ** 2) % m
+        if y == 1:
+            return False
+        if y == m - 1:
+            break
+    if y != (m - 1):
+        return False
+
+def millerRabin(m, t=10):
+    s = 0
+    r = m - 1
+    while (r & 1 == 0):
+        s, r = s + 1, r >> 1
+    for x in [3, 5, 7]:
+        if m % x == 0:
+            return False
+
+    for _ in range(t - 3):
+        x = random.randint(2, m - 1)
+        if millerRabinForX(m, s, r, x) == False:
+            return False
+    return True
+
+def generateRandomPrimeNumberByBits(bits):
+    num = random.getrandbits(bits)
+    while (not millerRabin(num) or not millerRabin((num - 1) // 2)): # safe primes
+        num = random.getrandbits(bits)
+    return num
+
+def getGeneratorNumber(p):
+    q = (p - 1) // 2
+    if not millerRabin(q):
+        return None
+
+    g = random.randint(2, p - 2)
+    while pow(g, q, p) == 1:
+        g = random.randint(2, p - 2)
+    return g
+
+def dLogSlow(g, A, p):
+    for i in range(1, p-1):
+        if pow(g, i, p) == A:
+            return i
+
+def dLog(g, A, p):
+    m = int((p - 1) ** 0.5) + 1
+    lst, qHatv = [], 1
+    for j in range(m):
+        lst = [qHatv] + lst
+        qHatv = (qHatv * g) % p
+    gInv = inverse(g, p)
+    gInvM = pow(gInv, m, p)
+    qHatv = 1
+    for i in range(m):
+        c = (A * qHatv) % p
+        try:
+            j = (m-1) - lst.index(c)
+            return i * m + j
+        except:
+            qHatv = (qHatv * gInvM) % p
+            continue
+    return -1
+
+def task5():
+    p = generateRandomPrimeNumberByBits(20)
+    g = getGeneratorNumber(p)
+    print(p, g)
+    for num in range(p // 2, p):
+        st1 = time.time()
+        dlogslow = dLogSlow(g, num, p)
+        fs1 = time.time()
+
+        st2 = time.time()
+        dlog = dLog(g, num, p)
+        fs2 = time.time()
+        print(f"{num}: Slow: {dlogslow} ({fs1 - st1}) Faster: {dlog} ({fs2 - st2})")
+        if dlog != dlogslow:
+            print("nem jo")
+            break
+
+
+# endregion
+
 if __name__ == "__main__":
-    task2()
+    task5()
