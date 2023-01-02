@@ -210,7 +210,7 @@ def task11():
     n = 10000
     a = 4
     for x in range(4, n + 1):
-        if (a ** (x - 1)) % x == 1 and (not isPrimeNumber(x)):
+        if pow(a, x - 1, x) == 1 and (not isPrimeNumber(x)):
             s += 1
     print(s)
 
@@ -220,12 +220,12 @@ def task11():
 
 def isCarmichaelNumber(num):
     for x in range(1, num):
-        if math.gcd(x, num) == 1 and (x ** (num - 1)) % num != 1:
+        if math.gcd(x, num) == 1 and pow(x, num - 1, num) != 1:
             return False
     return True
 
+# meg lehet csinalni az eratoszthenesz szitajaval hatekonyabban is 
 def task12():
-    isCarmichaelNumber(561)
     for num in range(4, 1000001):
         if not isPrimeNumber(num) and isCarmichaelNumber(num):
             print(num)
@@ -242,4 +242,4 @@ def task13():
 # endregion
 
 if __name__ == "__main__":
-    task13()
+    task12()
